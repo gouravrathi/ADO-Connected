@@ -16,10 +16,14 @@
             <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
             <br />
             <br />
-            PHONE NO.<asp:TextBox ID="phnno" runat="server"></asp:TextBox>
+            PHONE NO.<asp:TextBox ID="phnno" runat="server" OnTextChanged="phnno_TextChanged"></asp:TextBox>
             <br />
             <br />
             ADDRESS ID<asp:TextBox ID="addressid" runat="server"></asp:TextBox>
+            <br />
+            <br />
+            EMAIL&nbsp;&nbsp;
+            <asp:TextBox ID="Textemail" runat="server"></asp:TextBox>
             <br />
             <br />
             <br />

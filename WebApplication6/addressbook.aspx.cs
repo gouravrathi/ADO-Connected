@@ -31,14 +31,14 @@ namespace WebApplication6
                     {
                         com.CommandType = System.Data.CommandType.StoredProcedure;
                         com.Parameters.AddWithValue("@addressid", addressid.Text);
-                        com.Parameters.AddWithValue("@lastname", lastname.Text);
+                        com.Parameters.AddWithValue("@phone", phnno.Text);
+                        com.Parameters.AddWithValue("@email", Textemail.Text);
+                        com.Parameters.AddWithValue("@Firstname",fname.Text );
+                        com.Parameters.AddWithValue("@Lastname",lname.Text);
                         con.Open();
-                        int flag = com.ExecuteNonQuery();
+                        com.ExecuteNonQuery();
                         con.Close();
-                        if (flag > 0)
-                            TextBox1.Text = "record updated";
-                        else
-                            TextBox1.Text = "rocord not present";
+                        
                     }
                 }
 
@@ -79,14 +79,13 @@ namespace WebApplication6
                     com.Parameters.AddWithValue("@addressid", addressid.Text);
                     com.Parameters.AddWithValue("@lastname", lname.Text);
                     com.Parameters.AddWithValue("@firstname", fname.Text);
-                    com.Parameters.AddWithValue("@phoneno", phoneno.Text);
+                    com.Parameters.AddWithValue("@phone", phnno.Text);
+                    com.Parameters.AddWithValue("@email", Textemail.Text);
+
                     con.Open();
-                    int flag = com.ExecuteNonQuery();
+                    com.ExecuteNonQuery();
                     con.Close();
-                    if (flag > 0)
-                        TextBox1.Text = "record inserted";
-                    else
-                        TextBox1.Text = "rocord not inserted";
+                    
                 }
             }
         }
@@ -96,41 +95,46 @@ namespace WebApplication6
             using (con = getconnection())
             {
 
-                using (SqlCommand com = new SqlCommand("readaddress", con))
+                using (SqlCommand com = new SqlCommand("select * from address where addressid = @id", con))
                 {
-                    com.CommandType = System.Data.CommandType.StoredProcedure;
-                    com.Parameters.AddWithValue("@lastname", lname.Text);
-                    SqlParameter p1 = new SqlParameter("@fname", System.Data.SqlDbType.VarChar, 20);
-                    SqlParameter p2 = new SqlParameter("@addressid", System.Data.SqlDbType.Int);
-                    SqlParameter p3 = new SqlParameter("@phoneno", System.Data.SqlDbType.NChar, 30);
-                    SqlParameter p4 = new SqlParameter("@flag", System.Data.SqlDbType.Int);
-
-                    p1.Direction = System.Data.ParameterDirection.Output;
-                    p2.Direction = System.Data.ParameterDirection.Output;
-                    p3.Direction = System.Data.ParameterDirection.Output;
-                    p4.Direction = System.Data.ParameterDirection.ReturnValue;
-                    com.Parameters.Add(p1);
-                    com.Parameters.Add(p2);
-                    com.Parameters.Add(p3);
-                    com.Parameters.Add(p4);
-
-
-
+                    //com.CommandType = System.Data.CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@id", Convert.ToByte(addressid.Text));
+                   
                     con.Open();
-                    com.ExecuteNonQuery();
-                    con.Close();
-                    fname.Text = com.Parameters["@firstname"].Value.ToString();
-                    phnno.Text = com.Parameters["@phoneno"].Value.ToString();
-                    addressid.Text = com.Parameters["@addressid"].Value.ToString();
-                    int flag = (int)com.Parameters["@flag"].Value;
 
-                    if (flag == 1)
-                        TextBox1.Text = "record is searched";
-                    else
-                        TextBox1.Text = "record not present";
+                    SqlDataReader read = com.ExecuteReader();
+                    if (read.HasRows)
+                    {
+                        while (read.Read())
+                        {
+
+
+
+                            fname.Text = Convert.ToString(read["Firstname"]);
+                            phnno.Text = Convert.ToString(read["phone"]);
+                            lname.Text = Convert.ToString(read["lastname"]);
+                            
+                        
+
+                            //phnno.Text = com.Parameters["@phoneno"].Value.ToString();
+                            //lname.Text = com.Parameters["@addressid"].Value.ToString();
+
+
+
+                        }
+                    }
+                    con.Close();
+                   
+                  
+                   
 
                 }
             }
+        }
+
+        protected void phnno_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
     }
